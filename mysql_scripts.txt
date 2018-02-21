@@ -1,0 +1,25 @@
+# mysql scripts
+
+#Create database
+CREATE DATABASE bookworm DEFAULT CHARACTER SET utf8;
+
+USE bookworm;
+
+#Create tables
+CREATE TABLE kindle_today (
+	book_kid varchar(100) NOT NULL ,
+	book_name varchar(100) NOT NULL DEFAULT "unknown",
+	author varchar(100) NOT NULL DEFAULT "unknown",
+	aver_price float NOT NULL DEFAULT 0.0,
+	curr_price float NOT NULL DEFAULT 0.0,
+	score integer NOT NULL DEFAULT 0,
+	PRIMARY KEY(book_kid)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE bookfere (
+	book_fid varchar(100) NOT NULL ,
+	book_name varchar(100) NOT NULL DEFAULT "unknown",
+	author varchar(100) NOT NULL DEFAULT "unknown",
+	score integer NOT NULL DEFAULT 0,
+	PRIMARY KEY(book_fid)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
