@@ -29,5 +29,10 @@ def zbook():
 def bfere():
     return render_template('bfere.html')
 
+@app.route('/index')
+def index1():
+    with open('./templates/index1.html','r') as fd:
+    	return fd.read();
+
 if __name__ == '__main__':
     app.run(debug=True)
