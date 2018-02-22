@@ -70,11 +70,9 @@ def init_db():
 		data = cs.fetchone();
 		print("Database Version: %s " % data);
 	except Exception as e:
-		raise
-	else:
-		return db;
-	finally:
-		pass;
+		print(e);
+		print("Unable to connect to the MySQL Server.")
+	return db;
 
 def check_book(book, db):
 	cs = db.cursor();
@@ -84,13 +82,10 @@ def check_book(book, db):
 		cs.execute(sql);
 		count = int(cs.fetchone());
 		print("BOOK: ",book['dp']," nums: ",count);
+		return count;
 	except Exception as e:
 		print(e);
 		return 0;
-	else:
-		return count;
-	finally:
-		return 1;
 		
 def insert_book(book, db):
 	cs = db.cursor();
@@ -141,6 +136,8 @@ def merge_book(book, db):
 		print("Unable to update "+book['dp']+" date into ZBOOK.");
 	print("UPDATE SUCCESSFULLY.");
 
+def reset_db(db):
+	db.close();
 
 if __name__ == '__main__':
 	l = parse_zbook();
@@ -154,6 +151,10 @@ if __name__ == '__main__':
 
 	db = init_db();
 	for book in books:
-		#insert_book(book, db);
-		merge_book(book, db);
+		tmp = check_book(book,db);
+		if tmp == 0:
+			insert_book(book, db);
+		else:
+			merge_book(book, db);
+
 
