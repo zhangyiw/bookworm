@@ -3,6 +3,7 @@ from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
 
+#Remove bootstrap
 bootstrap = Bootstrap(app)
 
 

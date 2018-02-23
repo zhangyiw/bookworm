@@ -6,7 +6,7 @@ CREATE DATABASE bookworm DEFAULT CHARACTER SET utf8;
 USE bookworm;
 
 #Create tables
-CREATE TABLE kindle_today (
+CREATE TABLE zbook (
 	book_kid varchar(100) NOT NULL ,
 	book_name varchar(100) NOT NULL DEFAULT "unknown",
 	book_covr varchar(200) NOT NULL DEFAULT "/static/image/empty_pic.jpg",
