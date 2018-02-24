@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
+from parse_zbook import *
 
 app = Flask(__name__)
 
@@ -8,7 +9,6 @@ bootstrap = Bootstrap(app)
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
-
 
 @app.errorhandler(500)
 def internal_server_error(e):
@@ -19,8 +19,14 @@ def index():
     return render_template('index.html')
 
 @app.route('/zbook')
-def zbook():
-    return render_template('zbook.html')
+def zbook(books=[]):
+	db = init_db();
+	if db:
+		books = sel_daily(db);
+		print("Select Out "+str(len(books))+" books.");
+		return render_template('zbook.html',books=books);
+	else:
+		return render_template('404.html');
 
 @app.route('/bfere')
 def bfere():

@@ -48,6 +48,7 @@ def parse_weekly():
 	w = sorted(set(w),key=w.index);
 	return w;
 
+
 def parse_one(l):
 	book = {};
 	book['dp'] = l;
@@ -82,7 +83,8 @@ def init_db():
 		print("Database Version: %s " % data);
 	except Exception as e:
 		print(e);
-		print("Unable to connect to the MySQL Server.")
+		print("Unable to connect to the MySQL Server.");
+		return None;
 	return db;
 
 def check_book(book, db):
@@ -147,10 +149,38 @@ def merge_book(book, db):
 		print("Unable to update "+book['dp']+" date into ZBOOK.");
 	print("UPDATE SUCCESSFULLY.");
 
+def sel_daily(db):
+	books = [];
+	cs = db.cursor();
+	today = time.strftime("%Y-%m-%d", time.localtime());
+	sql = "SELECT book_kid, book_name, book_covr, author, oprice, hisl_price, hisl_date, curr_price, score, FORMAT(curr_price/oprice*10,1) AS discount FROM zbook WHERE curr_date='%s'"%(today);
+	print(sql);
+	book = {};
+	try:
+		cs.execute(sql);
+		results = cs.fetchall();
+		for row in results:
+			book = {};
+			book['dp'] = row[0];
+			book['title'] = row[1];
+			book['image'] = row[2];
+			book['author']= row[3];
+			book['oprice']= row[4];
+			book['lprice']= row[5];
+			book['ldate'] = row[6];
+			book['price'] = row[7];
+			book['score'] = row[8];
+			book['disct'] = row[9];
+			books.append(book);
+	except Exception as e:
+		print(e);
+		print("Could not select books from DB.");
+	return books;
+
 def reset_db(db):
 	db.close();
 
-if __name__ == '__main__':
+def parse_amazon():
 	l = parse_zbook();
 	l = l+parse_weekly();
 	print("There are ",len(l)," books to parse");
@@ -168,3 +198,10 @@ if __name__ == '__main__':
 			insert_book(book, db);
 		else:
 			merge_book(book, db);
+
+	reset_db();
+
+if __name__ == '__main__':
+	db = init_db();
+	books = sel_daily(db);
+	print(len(books));

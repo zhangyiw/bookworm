@@ -3,26 +3,22 @@
 {% block title %}Amazon Kindle{% endblock %}
 
 {% block page_content %}
-<div class="page-header">
+<div class="page-body">
 	<div class="container">
-	    <div class="row">
-	    	<div class="col-xm-3 col-md-2">
-	    		<img src=" https://images-cn.ssl-images-amazon.com/images/I/51Fxpy9nQkL._SY346_.jpg" class="img-thumbnail" alt="Cinque Terre" width="128" height="173">
-	    	</div>
-	    	<div class="col-xm-3 col-md-2">
-	    		<img src=" https://images-cn.ssl-images-amazon.com/images/I/51Fxpy9nQkL._SY346_.jpg" class="img-thumbnail" alt="Cinque Terre" width="128" height="173">
-	    	</div>
-	    	<div class="col-xm-3 col-md-2">
-	    		<img src=" https://images-cn.ssl-images-amazon.com/images/I/51Fxpy9nQkL._SY346_.jpg" class="img-thumbnail" alt="Cinque Terre" width="128" height="173">
-	    	</div>
-	    	<div class="col-xm-3 col-md-2">
-	    		<img src=" https://images-cn.ssl-images-amazon.com/images/I/51Fxpy9nQkL._SY346_.jpg" class="img-thumbnail" alt="Cinque Terre" width="128" height="173">
-	    	</div>
-	    	<div class="col-xm-3 col-md-2">
-	    		<img src=" https://images-cn.ssl-images-amazon.com/images/I/51Fxpy9nQkL._SY346_.jpg" class="img-thumbnail" alt="Cinque Terre" width="128" height="173">
-	    	</div>
-	    	<div class="col-xm-3 col-md-2">
-	    		<img src=" https://images-cn.ssl-images-amazon.com/images/I/51Fxpy9nQkL._SY346_.jpg" class="img-thumbnail" alt="Cinque Terre" width="128" height="173">
+	<p class="muted">现亚马逊Kindle商城有{{ books|length }}本书在打特价。</p>
+	    <div class="list-group">
+	    	<div class="list-group-item">
+	    		<dl class="dl-horizontal">
+	    			{% for book in books %}
+	    			<dt><img src="{{ book['image'] }}" class="img-thumbnail" alt="{{ book['title'] }}" width="125" height="175"></dt>
+	    			<dd>
+	    				<a href="https://www.amazon.cn{{ book['dp'] }}"><h4>{{ book['title'] }}</h2></a>
+	    				<p>作者：{{ book['author'] }}  评分：{{ book['score'] }}</p>
+	    				<p>原价：￥{{ book['oprice'] }}  现价：￥{{ book['price'] }}  折扣：{{ book['disct'] }}</p>
+	    				<p>历史最低价：￥{{ book['lprice'] }}  最低时间：{{ book['ldate'] }} </p>
+	    			</dd>
+	    			{% endfor %}
+	    		</dl>
 	    	</div>
 	    </div>
 	</div>
