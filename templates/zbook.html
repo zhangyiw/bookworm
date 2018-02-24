@@ -12,10 +12,16 @@
 	    			{% for book in books %}
 	    			<dt><img src="{{ book['image'] }}" class="img-thumbnail" alt="{{ book['title'] }}" width="125" height="175"></dt>
 	    			<dd>
-	    				<a href="https://www.amazon.cn{{ book['dp'] }}"><h4>{{ book['title'] }}</h2></a>
-	    				<p>作者：{{ book['author'] }}  评分：{{ book['score'] }}</p>
-	    				<p>原价：￥{{ book['oprice'] }}  现价：￥{{ book['price'] }}  折扣：{{ book['disct'] }}</p>
-	    				<p>历史最低价：￥{{ book['lprice'] }}  最低时间：{{ book['ldate'] }} </p>
+	    			<div class="row">
+	    				<div class="col-md-12"><a href="https://www.amazon.cn{{ book['dp'] }}"><h3> {{ book['title'] }} </h3></a></div>
+	    				<div class="col-md-4">作者：{{ book['author'] }}</div>
+	    				<div class="col-md-7">评分：{{ book['score'] }}</div>
+	    				<div class="col-md-2">原价：￥{{ book['oprice'] }}</div>
+	    				<div class="col-md-2"><b>现价：￥{{ book['price'] }}</b></div>
+	    				<div class="col-md-7">折扣：{{ book['disct'] }}</div>
+	    				<div class="col-md-4">历史最低价：￥{{ book['lprice'] }}</div>
+	    				<div class="col-md-7">最低时间：{{ book['ldate'] }}</div>
+	    			</div>
 	    			</dd>
 	    			{% endfor %}
 	    		</dl>
@@ -24,3 +30,9 @@
 	</div>
 </div>
 {% endblock %}
+
+<footer class="footer">
+	<div class="container">
+		<span class="text-muted">Copyright ©2018 zhangyiw</span>
+	</div>
+</footer>
