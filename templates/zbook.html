@@ -13,14 +13,14 @@
 	    			<dt><img src="{{ book['image'] }}" class="img-thumbnail" alt="{{ book['title'] }}" width="125" height="175"></dt>
 	    			<dd>
 	    			<div class="row">
-	    				<div class="col-md-12"><a href="https://www.amazon.cn{{ book['dp'] }}"><h3> {{ book['title'] }} </h3></a></div>
+	    				<div class="col-md-12"><a href="https://www.amazon.cn{{ book['dp'] }}"><h4> {{ book['title'] }} </h4></a></div>
 	    				<div class="col-md-4">作者：{{ book['author'] }}</div>
-	    				<div class="col-md-7">评分：{{ book['score'] }}</div>
+	    				<div class="col-md-8">评分：{{ book['score'] }}</div>
 	    				<div class="col-md-2">原价：￥{{ book['oprice'] }}</div>
-	    				<div class="col-md-2"><b>现价：￥{{ book['price'] }}</b></div>
-	    				<div class="col-md-7">折扣：{{ book['disct'] }}</div>
+	    				<div class="col-md-2">现价：￥{{ book['price'] }}</div>
+	    				<div class="col-md-8">折扣：{{ book['disct'] }}</div>
 	    				<div class="col-md-4">历史最低价：￥{{ book['lprice'] }}</div>
-	    				<div class="col-md-7">最低时间：{{ book['ldate'] }}</div>
+	    				<div class="col-md-8">最低时间：{{ book['ldate'] }}</div>
 	    			</div>
 	    			</dd>
 	    			{% endfor %}
