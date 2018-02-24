@@ -3,9 +3,7 @@ from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
 
-#Remove bootstrap
 bootstrap = Bootstrap(app)
-
 
 @app.errorhandler(404)
 def page_not_found(e):

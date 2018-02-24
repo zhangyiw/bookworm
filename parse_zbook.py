@@ -36,6 +36,18 @@ def parse_zbook():
 	m = sorted(set(m),key=m.index);
 	return m;
 
+def parse_weekly():
+	c = get_url('''https://www.amazon.cn/s/ref=s9_acsd_hps_bw_clnk_r?__mk_zh_CN=%E4%BA%9A%E9%A9%AC%E9%80%8A%E7%BD%91%E7%AB%99&sort=popularity-rank&search-alias=digital-text&node=1852543071&pf_rd_m=A1AJ19PSB66TGU&pf_rd_s=merchandised-search-8&pf_rd_r=7X3PC84AJ9GMNZ12DVC0&pf_rd_t=101&pf_rd_p=2d85e30d-2e9e-416c-8325-cd9f23dc0653&pf_rd_i=1875254071''');
+	soup = BeautifulSoup(c, 'lxml');
+	b = soup.body.find_all(href=re.compile('^https://www.amazon.cn/dp/*'));
+	w = [];
+	if len(b) == 0:
+		return w;
+	for i in b:
+		w.append(i['href'][21:35]);
+	w = sorted(set(w),key=w.index);
+	return w;
+
 def parse_one(l):
 	book = {};
 	book['dp'] = l;
@@ -45,6 +57,8 @@ def parse_one(l):
 	book['image'] = soup.find('img',id='ebooksImgBlkFront')['src'];
 	book['title'] = soup.find('span',id='ebooksProductTitle').text;
 	book['author']= soup.find('span',class_='author notFaded').text.split('\n')[1];
+	book['oprice']= re.findall(r"\d+\.?\d*",soup.find('span', \
+		class_='a-color-base a-text-strike').text)[0];
 	book['price'] = re.findall(r"\d+\.?\d*",soup.find('span', \
 		class_='a-size-base a-color-price a-color-price').text)[0];
 	book['date']  = time.strftime("%Y-%m-%d", time.localtime());
@@ -56,10 +70,7 @@ def parse_one(l):
 	except Exception as e:
 		print(e);
 		print("Book:",l," does not have score.")
-	else:
-		pass
-	finally:
-		pass
+	print(book);
 	return book;
 
 def init_db():
@@ -89,9 +100,9 @@ def check_book(book, db):
 		
 def insert_book(book, db):
 	cs = db.cursor();
-	sql = "INSERT INTO zbook(book_kid, book_name, book_covr, author, hisl_price, hisl_date, curr_price, curr_date, score)"+\
+	sql = "INSERT INTO zbook(book_kid, book_name, book_covr, author, hisl_price, hisl_date, curr_price, curr_date, score, oprice)"+\
 	" VALUES('"+book['dp']+"','"+book['title']+"','"+book['image']+"','"+book['author']+"',"+book['price']+",'"+\
-	book['date']+"',"+book['price']+",'"+book['date']+"',"+str(book['score'])+")";
+	book['date']+"',"+book['price']+",'"+book['date']+"',"+str(book['score'])+","+book['oprice']+")";
 	print(sql);
 	try:
 		cs.execute(sql);
@@ -124,8 +135,8 @@ def merge_book(book, db):
 		hisl_price = float(book['price']);
 		hisl_date =  book['date'];
 	
-	sql2 = "UPDATE zbook SET book_name='%s', book_covr='%s', author='%s', curr_price=%s, curr_date='%s', hisl_price=%s, hisl_date='%s', score=%.1f WHERE book_kid='%s' "%(\
-		book['title'], book['image'], book['author'], book['price'], book['date'], hisl_price, hisl_date, book['score'], book['dp']);
+	sql2 = "UPDATE zbook SET book_name='%s', book_covr='%s', author='%s', oprice=%s, curr_price=%s, curr_date='%s', hisl_price=%s, hisl_date='%s', score=%.1f WHERE book_kid='%s' "%(\
+		book['title'], book['image'], book['author'], book['oprice'], book['price'], book['date'], hisl_price, hisl_date, book['score'], book['dp']);
 	print(sql2);
 	try:
 		#print(hisl_date+" : "+str(hisl_price));
@@ -141,6 +152,7 @@ def reset_db(db):
 
 if __name__ == '__main__':
 	l = parse_zbook();
+	l = l+parse_weekly();
 	print("There are ",len(l)," books to parse");
 	books = [];
 	for x in l:
@@ -156,5 +168,3 @@ if __name__ == '__main__':
 			insert_book(book, db);
 		else:
 			merge_book(book, db);
-
-

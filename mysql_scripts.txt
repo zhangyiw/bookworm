@@ -11,6 +11,7 @@ CREATE TABLE zbook (
 	book_name varchar(100) NOT NULL DEFAULT "unknown",
 	book_covr varchar(200) NOT NULL DEFAULT "/static/image/empty_pic.jpg",
 	author varchar(100) NOT NULL DEFAULT "unknown",
+	oprice float NOT NULL DEFAULT 0.0,
 	hisl_price float NOT NULL DEFAULT 0.0,
 	hisl_date date,
 	curr_price float NOT NULL DEFAULT 0.0,
